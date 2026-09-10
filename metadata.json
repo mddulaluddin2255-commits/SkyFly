@@ -1,0 +1,6 @@
+{
+  "name": "SkyFly",
+  "description": "Mobile-first arcade airplane crash score game featuring Firebase player accounts, 1000 starting virtual points, 10-point flight costs, Google Ads rewarded bonus points, and high score tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

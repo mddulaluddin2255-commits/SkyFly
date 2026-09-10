@@ -1,0 +1,12 @@
+{
+  "appId": "com.skyfly.arcadegame",
+  "appName": "SkyFly",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "plugins": {
+    "AdMob": {
+      "appId": "ca-app-pub-6326541829707953~3162110645",
+      "rewardedAdUnitId": "ca-app-pub-6326541829707953/5714272318"
+    }
+  }
+}

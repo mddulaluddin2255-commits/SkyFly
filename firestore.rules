@@ -1,0 +1,124 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidUserProfile(data) {
+      return data.uid is string &&
+        data.uid.size() > 0 &&
+        data.uid.size() <= 128 &&
+        data.displayName is string &&
+        data.displayName.size() > 0 &&
+        data.displayName.size() <= 64 &&
+        data.virtualPoints is number &&
+        data.virtualPoints >= 0 &&
+        (!('email' in data) || (data.email is string && data.email.size() <= 256)) &&
+        (!('highScore' in data) || (data.highScore is number && data.highScore >= 0)) &&
+        (!('totalFlights' in data) || (data.totalFlights is number && data.totalFlights >= 0)) &&
+        (!('successfulClaims' in data) || (data.successfulClaims is number && data.successfulClaims >= 0)) &&
+        (!('totalEarnedScore' in data) || (data.totalEarnedScore is number && data.totalEarnedScore >= 0));
+    }
+
+    // Server-grade mathematical validation for point balance transitions
+    // Prevents arbitrary point tampering from unauthorized client mutations
+    function isValidPointTransition(oldData, newData) {
+      let isTakeoffDeduction = newData.virtualPoints == oldData.virtualPoints - 10 &&
+        oldData.virtualPoints >= 10 &&
+        newData.totalFlights == oldData.totalFlights + 1 &&
+        newData.successfulClaims == oldData.successfulClaims &&
+        newData.highScore == oldData.highScore;
+
+      let isAdReward = newData.virtualPoints == oldData.virtualPoints + 100 &&
+        newData.totalFlights == oldData.totalFlights &&
+        newData.successfulClaims == oldData.successfulClaims &&
+        newData.highScore == oldData.highScore;
+
+      let scoreDelta = newData.virtualPoints - oldData.virtualPoints;
+      let isScoreClaim = scoreDelta >= 10 &&
+        scoreDelta <= 500 &&
+        newData.successfulClaims == oldData.successfulClaims + 1 &&
+        newData.totalFlights == oldData.totalFlights &&
+        newData.totalEarnedScore == oldData.totalEarnedScore + scoreDelta &&
+        newData.highScore >= oldData.highScore;
+
+      let isProfileInfoUpdate = newData.virtualPoints == oldData.virtualPoints &&
+        newData.totalFlights == oldData.totalFlights &&
+        newData.successfulClaims == oldData.successfulClaims &&
+        newData.highScore == oldData.highScore &&
+        newData.totalEarnedScore == oldData.totalEarnedScore;
+
+      return isTakeoffDeduction || isAdReward || isScoreClaim || isProfileInfoUpdate;
+    }
+
+    // User profile and virtual point wallet
+    // Initial balance on signup is strictly 1000 points.
+    // Points cannot be negative and balance changes must strictly follow validated game events.
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow list: if false; // Strict privacy: player balances are private and isolated
+
+      allow create: if isOwner(userId) &&
+        isValidId(userId) &&
+        incoming().uid == request.auth.uid &&
+        incoming().virtualPoints == 1000 &&
+        (!('highScore' in incoming()) || incoming().highScore == 0) &&
+        (!('totalFlights' in incoming()) || incoming().totalFlights == 0) &&
+        (!('successfulClaims' in incoming()) || incoming().successfulClaims == 0) &&
+        (!('totalEarnedScore' in incoming()) || incoming().totalEarnedScore == 0) &&
+        isValidUserProfile(incoming());
+
+      allow update: if isOwner(userId) &&
+        isValidId(userId) &&
+        incoming().uid == existing().uid &&
+        incoming().virtualPoints >= 0 &&
+        isValidUserProfile(incoming()) &&
+        isValidPointTransition(existing(), incoming());
+
+      allow delete: if false;
+    }
+
+    // Public arcade high score leaderboard
+    match /leaderboard/{scoreId} {
+      allow read: if true;
+      allow create: if isSignedIn() &&
+        isValidId(scoreId) &&
+        incoming().userId == request.auth.uid &&
+        incoming().score is number &&
+        incoming().score >= 10 &&
+        incoming().score <= 500 &&
+        incoming().multiplier is number &&
+        incoming().multiplier >= 1.0 &&
+        incoming().multiplier <= 50.0 &&
+        incoming().claimed == true &&
+        incoming().pilotName is string &&
+        incoming().pilotName.size() > 0 &&
+        incoming().pilotName.size() <= 64;
+      allow update, delete: if false;
+    }
+  }
+}

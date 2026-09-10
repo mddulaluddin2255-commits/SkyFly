@@ -1,0 +1,109 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated player profile and virtual point wallet",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth UID of the player",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "description": "Player email address",
+          "maxLength": 256
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Pilot callsign or display name",
+          "maxLength": 64
+        },
+        "virtualPoints": {
+          "type": "number",
+          "description": "Current virtual score points (starts at 1000, min 0)"
+        },
+        "highScore": {
+          "type": "number",
+          "description": "Personal highest flight score claimed"
+        },
+        "totalFlights": {
+          "type": "number",
+          "description": "Total number of flights initiated"
+        },
+        "successfulClaims": {
+          "type": "number",
+          "description": "Number of successful claims before crash"
+        },
+        "totalEarnedScore": {
+          "type": "number",
+          "description": "Cumulative score points earned across all flights"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of account creation"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last update"
+        }
+      },
+      "required": [
+        "uid",
+        "displayName",
+        "virtualPoints"
+      ]
+    },
+    "LeaderboardEntry": {
+      "title": "LeaderboardEntry",
+      "description": "Public high score flight record",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "UID of the player",
+          "maxLength": 128
+        },
+        "pilotName": {
+          "type": "string",
+          "description": "Callsign of the pilot",
+          "maxLength": 64
+        },
+        "score": {
+          "type": "number",
+          "description": "Virtual score points claimed"
+        },
+        "multiplier": {
+          "type": "number",
+          "description": "Flight multiplier at claim"
+        },
+        "timestamp": {
+          "type": "number",
+          "description": "Epoch timestamp of flight"
+        },
+        "claimed": {
+          "type": "boolean",
+          "description": "Whether flight score was successfully claimed"
+        }
+      },
+      "required": [
+        "pilotName",
+        "score",
+        "multiplier",
+        "timestamp",
+        "claimed"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Private user account profile and virtual point balance"
+    },
+    "/leaderboard/{scoreId}": {
+      "schema": "LeaderboardEntry",
+      "description": "Public arcade leaderboard records"
+    }
+  }
+}
