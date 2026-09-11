@@ -272,14 +272,14 @@ export interface FlightClaimResult {
 /**
  * FLIGHT COST:
  * Server-side validated flight launch.
- * Validates player has >= 10 virtual points, deducts 10 points on server and in Firestore.
- * Rejects takeoff if points < 10.
+ * Validates player has >= 20 virtual points, deducts 20 points on server and in Firestore.
+ * Rejects takeoff if points < 20.
  */
 export async function deductFlightCostPoints(
   profile: UserProfile
 ): Promise<FlightStartResult> {
-  if (profile.virtualPoints < 10) {
-    throw new Error('Not enough points. Watch a rewarded ad to earn more points.');
+  if (profile.virtualPoints < 20) {
+    throw new Error('Not enough points (20 required). Watch a rewarded ad to earn more points.');
   }
 
   // Authoritative server-side flight session start & point deduction validation
@@ -312,14 +312,14 @@ export async function deductFlightCostPoints(
     }
   } catch (netErr: any) {
     // If offline or network error, verify local balance strictly
-    if (profile.virtualPoints < 10) {
-      throw new Error('Not enough points. Watch a rewarded ad to earn more points.');
+    if (profile.virtualPoints < 20) {
+      throw new Error('Not enough points (20 required). Watch a rewarded ad to earn more points.');
     }
   }
 
   const updated: UserProfile = {
     ...profile,
-    virtualPoints: Math.max(0, profile.virtualPoints - 10),
+    virtualPoints: Math.max(0, profile.virtualPoints - 20),
     totalFlights: (profile.totalFlights || 0) + 1,
     updatedAt: new Date().toISOString(),
   };
@@ -334,7 +334,7 @@ export async function deductFlightCostPoints(
   try {
     const userRef = doc(db, 'users', profile.uid);
     await updateDoc(userRef, {
-      virtualPoints: increment(-10),
+      virtualPoints: increment(-20),
       totalFlights: increment(1),
       updatedAt: new Date().toISOString(),
     });

@@ -122,7 +122,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               </div>
               <div className="flex items-start space-x-2">
                 <Check size={14} className="text-emerald-400 mt-0.5 shrink-0" />
-                <span><strong>Flight Cost:</strong> Deducts exactly 10 points only when flight actually starts.</span>
+                <span><strong>Flight Cost:</strong> Deducts exactly 20 points only when flight actually starts.</span>
               </div>
               <div className="flex items-start space-x-2">
                 <Check size={14} className="text-emerald-400 mt-0.5 shrink-0" />

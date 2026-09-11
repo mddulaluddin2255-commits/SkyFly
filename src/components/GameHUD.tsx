@@ -212,7 +212,7 @@ export const GameHUD: React.FC<GameHUDProps> = ({
         <div className="pointer-events-auto mx-auto w-full max-w-xs mb-2 p-3 rounded-2xl bg-rose-950/95 border-2 border-rose-500/80 text-white shadow-2xl flex flex-col items-center text-center animate-bounce">
           <div className="flex items-center space-x-1.5 text-rose-300 font-aviation font-bold text-xs">
             <AlertTriangle size={16} />
-            <span>NOT ENOUGH POINTS (10 REQUIRED)</span>
+            <span>NOT ENOUGH POINTS (20 REQUIRED)</span>
           </div>
           <p className="text-[11px] text-slate-200 mt-1">
             {profile.uid === 'guest_pilot'

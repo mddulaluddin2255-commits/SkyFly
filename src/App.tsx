@@ -149,12 +149,12 @@ export default function App() {
 
   /**
    * FLIGHT START:
-   * Deducts exactly 10 virtual points.
-   * If points < 10, blocks takeoff and displays notice.
+   * Deducts exactly 20 virtual points.
+   * If points < 20, blocks takeoff and displays notice.
    */
   const handleStartFlight = useCallback(async () => {
-    // Pre-flight check: At least 10 virtual points required
-    if (profile.virtualPoints < 10) {
+    // Pre-flight check: At least 20 virtual points required
+    if (profile.virtualPoints < 20) {
       soundService.triggerHaptic(100);
       setInsufficientPointsPrompt(true);
       return;
@@ -165,7 +165,7 @@ export default function App() {
     soundService.playTakeoff();
     soundService.triggerHaptic(50);
 
-    // Deduct exactly 10 points from balance with server-side validation
+    // Deduct exactly 20 points from balance with server-side validation
     try {
       const { profile: updatedProfile, sessionId } = await deductFlightCostPoints(profile);
       activeSessionIdRef.current = sessionId;

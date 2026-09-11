@@ -105,8 +105,8 @@ app.get('/api/health', (_req: Request, res: Response) => {
 /**
  * POST /api/flight/start
  * Authoritatively starts a flight round:
- * 1. Validates player points balance (must have >= 10 points)
- * 2. Authoritatively logs 10 point deduction
+ * 1. Validates player points balance (must have >= 20 points)
+ * 2. Authoritatively logs 20 point deduction
  * 3. Authoritatively generates and securely hides crash point on server
  * 4. Issues unique sessionId
  */
@@ -115,10 +115,10 @@ app.post('/api/flight/start', (req: Request, res: Response) => {
     const { uid } = getPilotIdentity(req);
     const currentPoints = Number(req.body.currentPoints);
 
-    if (isNaN(currentPoints) || currentPoints < 10) {
+    if (isNaN(currentPoints) || currentPoints < 20) {
       return res.status(400).json({
         success: false,
-        error: 'Insufficient virtual points. A minimum of 10 points is required for takeoff.',
+        error: 'Insufficient virtual points. A minimum of 20 points is required for takeoff.',
       });
     }
 
@@ -130,7 +130,7 @@ app.post('/api/flight/start', (req: Request, res: Response) => {
       userId: uid,
       startTime: Date.now(),
       crashMultiplier: authoritativeCrash,
-      costDeducted: 10,
+      costDeducted: 20,
       claimed: false,
       crashed: false,
     };
@@ -141,9 +141,9 @@ app.post('/api/flight/start', (req: Request, res: Response) => {
     res.json({
       success: true,
       sessionId,
-      flightCost: 10,
+      flightCost: 20,
       serverTimestamp: session.startTime,
-      message: 'Flight initiated. 10 points validated and deducted.',
+      message: 'Flight initiated. 20 points validated and deducted.',
     });
   } catch (err: any) {
     res.status(500).json({ success: false, error: err?.message || 'Server flight start error' });
@@ -310,10 +310,10 @@ app.post('/api/points/validate-mutation', (req: Request, res: Response) => {
   }
 
   if (mutationType === 'deduct_flight') {
-    if (currentPoints < 10 || amount !== 10) {
-      return res.status(400).json({ success: false, error: 'Takeoff requires exactly 10 points.' });
+    if (currentPoints < 20 || amount !== 20) {
+      return res.status(400).json({ success: false, error: 'Takeoff requires exactly 20 points.' });
     }
-    return res.json({ success: true, newPoints: currentPoints - 10 });
+    return res.json({ success: true, newPoints: currentPoints - 20 });
   }
 
   if (mutationType === 'reward_ad') {

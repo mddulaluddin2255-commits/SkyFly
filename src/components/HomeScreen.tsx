@@ -138,7 +138,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               {profile.virtualPoints.toLocaleString()}
             </span>
             <span className="text-[9px] text-amber-500/80 font-semibold font-aviation">
-              COST: 10 PTS / FLIGHT
+              COST: 20 PTS / FLIGHT
             </span>
           </div>
 
@@ -188,7 +188,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           className="w-full max-w-xs py-4 px-6 rounded-2xl bg-gradient-to-r from-sky-500 via-sky-400 to-indigo-500 hover:from-sky-400 hover:to-indigo-400 text-slate-950 font-black text-xl font-aviation tracking-wider uppercase shadow-xl shadow-sky-500/30 flex items-center justify-center space-x-3 transition-all transform active:scale-95 border-t border-white/40 cursor-pointer"
         >
           <Play size={24} className="fill-current" />
-          <span>START FLIGHT (-10 PTS)</span>
+          <span>START FLIGHT (-20 PTS)</span>
         </button>
 
         {/* WATCH AD +100 POINTS Button */}
@@ -201,10 +201,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <span>WATCH AD +100 POINTS</span>
         </button>
 
-        {profile.virtualPoints < 10 && (
+        {profile.virtualPoints < 20 && (
           <div className="w-full max-w-xs mt-2.5 p-2.5 rounded-xl bg-rose-950/80 border border-rose-500/60 text-center">
             <p className="text-xs text-rose-300 font-aviation font-bold">
-              ⚠️ Not enough points (10 required).
+              ⚠️ Not enough points (20 required).
             </p>
             <p className="text-[11px] text-slate-300 mt-0.5">
               {isGuest

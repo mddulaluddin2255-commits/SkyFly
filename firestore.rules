@@ -47,8 +47,8 @@ service cloud.firestore {
     // Server-grade mathematical validation for point balance transitions
     // Prevents arbitrary point tampering from unauthorized client mutations
     function isValidPointTransition(oldData, newData) {
-      let isTakeoffDeduction = newData.virtualPoints == oldData.virtualPoints - 10 &&
-        oldData.virtualPoints >= 10 &&
+      let isTakeoffDeduction = newData.virtualPoints == oldData.virtualPoints - 20 &&
+        oldData.virtualPoints >= 20 &&
         newData.totalFlights == oldData.totalFlights + 1 &&
         newData.successfulClaims == oldData.successfulClaims &&
         newData.highScore == oldData.highScore;
