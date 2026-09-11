@@ -399,6 +399,7 @@ export default function App() {
               onOpenSettings={() => setShowSettings(true)}
               onOpenProfile={() => setScreen('profile')}
               onOpenSignIn={() => setScreen('signin')}
+              onOpenSignUp={() => setScreen('signup')}
               onOpenAdModal={() => setShowAdModal(true)}
               onToggleSound={toggleSound}
             />
@@ -442,6 +443,7 @@ export default function App() {
             onAbortFlight={handleGoHome}
             onToggleSound={toggleSound}
             onOpenAdModal={() => setShowAdModal(true)}
+            onOpenSignUp={() => setScreen('signup')}
             onSignOut={handleSignOut}
             insufficientPointsPrompt={insufficientPointsPrompt}
             onDismissInsufficientPoints={() => setInsufficientPointsPrompt(false)}
@@ -454,6 +456,7 @@ export default function App() {
             profile={profile}
             onSignOut={handleSignOut}
             onOpenAdModal={() => setShowAdModal(true)}
+            onOpenSignUp={() => setScreen('signup')}
             onBackToHome={() => setScreen('home')}
           />
         )}
@@ -468,6 +471,10 @@ export default function App() {
             currentScore={currentScore}
             onRestartFlight={handleRestartFlight}
             onGoHome={handleGoHome}
+            onOpenSignUp={() => {
+              setShowGameOverModal(false);
+              setScreen('signup');
+            }}
             onOpenAdModal={() => {
               setShowGameOverModal(false);
               setShowAdModal(true);

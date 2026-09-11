@@ -26,6 +26,7 @@ interface GameHUDProps {
   onAbortFlight: () => void;
   onToggleSound: () => void;
   onOpenAdModal: () => void;
+  onOpenSignUp?: () => void;
   onSignOut: () => void;
   insufficientPointsPrompt: boolean;
   onDismissInsufficientPoints: () => void;
@@ -42,6 +43,7 @@ export const GameHUD: React.FC<GameHUDProps> = ({
   onAbortFlight,
   onToggleSound,
   onOpenAdModal,
+  onOpenSignUp,
   onSignOut,
   insufficientPointsPrompt,
   onDismissInsufficientPoints,
@@ -213,23 +215,36 @@ export const GameHUD: React.FC<GameHUDProps> = ({
             <span>NOT ENOUGH POINTS (10 REQUIRED)</span>
           </div>
           <p className="text-[11px] text-slate-200 mt-1">
-            Not enough points. Watch a rewarded ad to earn more points.
+            {profile.uid === 'guest_pilot'
+              ? 'Sign up to claim 1,000 free bonus points, or watch an ad for +100 points!'
+              : 'Not enough points. Watch a rewarded ad to earn +100 points.'}
           </p>
-          <div className="flex items-center space-x-2 mt-2 w-full">
-            <button
-              id="btn-insufficient-watch-ad"
-              onClick={onOpenAdModal}
-              className="flex-1 py-2 px-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-xs font-aviation uppercase tracking-wider shadow-md"
-            >
-              WATCH AD +100 PTS
-            </button>
-            <button
-              id="btn-insufficient-dismiss"
-              onClick={onDismissInsufficientPoints}
-              className="py-2 px-3 rounded-xl bg-slate-800 text-slate-300 text-xs font-aviation"
-            >
-              Dismiss
-            </button>
+          <div className="flex flex-col space-y-1.5 mt-2.5 w-full">
+            {profile.uid === 'guest_pilot' && onOpenSignUp && (
+              <button
+                id="btn-insufficient-signup"
+                onClick={onOpenSignUp}
+                className="w-full py-2 px-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-xs font-aviation uppercase tracking-wider shadow-md active:scale-95"
+              >
+                SIGN UP (+1,000 FREE PTS)
+              </button>
+            )}
+            <div className="flex items-center space-x-2 w-full">
+              <button
+                id="btn-insufficient-watch-ad"
+                onClick={onOpenAdModal}
+                className="flex-1 py-2 px-2 rounded-xl bg-slate-900 border border-amber-400/60 text-amber-300 font-bold text-xs font-aviation uppercase tracking-wider shadow-md active:scale-95"
+              >
+                WATCH AD +100 PTS
+              </button>
+              <button
+                id="btn-insufficient-dismiss"
+                onClick={onDismissInsufficientPoints}
+                className="py-2 px-3 rounded-xl bg-slate-800 text-slate-300 text-xs font-aviation active:scale-95"
+              >
+                Dismiss
+              </button>
+            </div>
           </div>
         </div>
       )}

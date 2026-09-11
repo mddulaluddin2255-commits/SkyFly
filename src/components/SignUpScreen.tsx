@@ -95,7 +95,7 @@ export const SignUpScreen: React.FC<SignUpScreenProps> = ({
         {/* Bonus Callout */}
         <div className="mt-2 px-3 py-1.5 rounded-xl bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-aviation font-bold flex items-center space-x-1.5 shadow-md shadow-amber-950/20">
           <Sparkles size={14} className="text-amber-400 shrink-0" />
-          <span>STARTING BONUS: 1,000 VIRTUAL POINTS</span>
+          <span>SIGN UP BONUS: 1,000 FREE VIRTUAL POINTS</span>
         </div>
 
         {errorMsg && (

@@ -11,6 +11,7 @@ interface GameOverModalProps {
   onRestartFlight: () => void;
   onGoHome: () => void;
   onOpenAdModal: () => void;
+  onOpenSignUp?: () => void;
 }
 
 export const GameOverModal: React.FC<GameOverModalProps> = ({
@@ -22,6 +23,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   onRestartFlight,
   onGoHome,
   onOpenAdModal,
+  onOpenSignUp,
 }) => {
   const isCrashed = round.status === 'crashed';
   const isClaimed = round.status === 'claimed';
@@ -124,6 +126,18 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
             <Sparkles size={14} className="text-amber-400 animate-spin" />
             <span>WATCH AD +100 POINTS</span>
           </button>
+
+          {/* Guest Sign Up Bonus Callout */}
+          {profile.uid === 'guest_pilot' && onOpenSignUp && (
+            <button
+              id="btn-modal-signup"
+              onClick={onOpenSignUp}
+              className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-black text-xs font-aviation uppercase tracking-wider flex items-center justify-center space-x-1.5 active:scale-95 transition-all shadow-md shadow-amber-500/20 cursor-pointer"
+            >
+              <Sparkles size={14} className="text-slate-950" />
+              <span>SIGN UP & GET 1,000 FREE PTS</span>
+            </button>
+          )}
 
           {/* Go to Home */}
           <button

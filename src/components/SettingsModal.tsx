@@ -118,7 +118,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2 text-slate-300">
               <div className="flex items-start space-x-2">
                 <Check size={14} className="text-emerald-400 mt-0.5 shrink-0" />
-                <span><strong>Starting Balance:</strong> Every new pilot account starts with exactly 1,000 virtual points.</span>
+                <span><strong>Starting Balance:</strong> Guest pilots start with 0 points. Sign up for a free pilot account to claim 1,000 Free Virtual Points!</span>
               </div>
               <div className="flex items-start space-x-2">
                 <Check size={14} className="text-emerald-400 mt-0.5 shrink-0" />

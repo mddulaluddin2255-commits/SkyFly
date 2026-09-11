@@ -10,6 +10,7 @@ interface HomeScreenProps {
   onOpenSettings: () => void;
   onOpenProfile: () => void;
   onOpenSignIn: () => void;
+  onOpenSignUp: () => void;
   onOpenAdModal: () => void;
   onToggleSound: () => void;
 }
@@ -22,6 +23,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   onOpenSettings,
   onOpenProfile,
   onOpenSignIn,
+  onOpenSignUp,
   onOpenAdModal,
   onToggleSound,
 }) => {
@@ -44,25 +46,37 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         {/* User Account Pill & Controls */}
         <div className="flex items-center space-x-1.5">
           {/* Pilot Account Pill */}
-          <button
-            id="btn-home-profile"
-            onClick={isGuest ? onOpenSignIn : onOpenProfile}
-            className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900/80 border border-slate-700/60 hover:border-sky-500/60 transition-all text-xs active:scale-95"
-          >
-            {isGuest ? (
-              <>
-                <LogIn size={14} className="text-sky-400" />
+          {isGuest ? (
+            <div className="flex items-center space-x-1">
+              <button
+                id="btn-home-signup-top"
+                onClick={onOpenSignUp}
+                className="flex items-center space-x-1 px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 font-black text-xs font-aviation uppercase tracking-wider shadow-md shadow-amber-500/20 active:scale-95 cursor-pointer"
+              >
+                <Sparkles size={13} className="text-slate-950" />
+                <span>+1,000 PTS</span>
+              </button>
+              <button
+                id="btn-home-signin"
+                onClick={onOpenSignIn}
+                className="flex items-center space-x-1 px-2.5 py-1.5 rounded-xl bg-slate-900/80 border border-slate-700/60 hover:border-sky-500/60 transition-all text-xs active:scale-95"
+              >
+                <LogIn size={13} className="text-sky-400" />
                 <span className="font-aviation font-bold text-slate-300">Sign In</span>
-              </>
-            ) : (
-              <>
-                <User size={14} className="text-sky-400" />
-                <span className="font-aviation font-bold text-slate-200 max-w-[80px] truncate">
-                  {profile.displayName || 'Pilot'}
-                </span>
-              </>
-            )}
-          </button>
+              </button>
+            </div>
+          ) : (
+            <button
+              id="btn-home-profile"
+              onClick={onOpenProfile}
+              className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl bg-slate-900/80 border border-slate-700/60 hover:border-sky-500/60 transition-all text-xs active:scale-95"
+            >
+              <User size={14} className="text-sky-400" />
+              <span className="font-aviation font-bold text-slate-200 max-w-[80px] truncate">
+                {profile.displayName || 'Pilot'}
+              </span>
+            </button>
+          )}
 
           <button
             id="btn-sound-toggle"
@@ -124,7 +138,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               {profile.virtualPoints.toLocaleString()}
             </span>
             <span className="text-[9px] text-amber-500/80 font-semibold font-aviation">
-              COST: 50 PTS / FLIGHT
+              COST: 10 PTS / FLIGHT
             </span>
           </div>
 
@@ -140,6 +154,32 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <span className="text-[9px] text-slate-500">POINTS</span>
           </div>
         </div>
+
+        {/* Guest Sign Up Bonus Callout Banner */}
+        {isGuest && (
+          <button
+            id="btn-guest-signup-banner"
+            onClick={onOpenSignUp}
+            className="w-full max-w-xs mb-3 p-3 rounded-2xl bg-gradient-to-r from-amber-500/20 via-yellow-500/20 to-amber-500/10 border-2 border-amber-400/60 hover:border-amber-400 flex items-center justify-between text-left transition-all active:scale-95 shadow-lg shadow-amber-950/40 cursor-pointer group"
+          >
+            <div className="flex items-center space-x-2.5">
+              <div className="w-9 h-9 rounded-xl bg-amber-500/30 border border-amber-400/80 flex items-center justify-center text-amber-300">
+                <Sparkles size={18} className="animate-spin" />
+              </div>
+              <div>
+                <div className="text-xs font-black font-aviation uppercase text-amber-300 tracking-wider">
+                  Sign Up & Get 1,000 Points!
+                </div>
+                <div className="text-[10px] text-slate-300">
+                  Register free pilot account for 1,000 pts bonus
+                </div>
+              </div>
+            </div>
+            <span className="text-xs font-black font-aviation text-slate-950 bg-amber-400 px-2.5 py-1 rounded-lg uppercase tracking-wider group-hover:bg-amber-300">
+              Claim
+            </span>
+          </button>
+        )}
 
         {/* Start Flight Primary Action */}
         <button
@@ -162,9 +202,16 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         </button>
 
         {profile.virtualPoints < 10 && (
-          <p className="text-xs text-rose-400 font-aviation font-bold mt-2 animate-bounce">
-            ⚠️ Not enough points (10 required). Watch an ad above to earn +100 points!
-          </p>
+          <div className="w-full max-w-xs mt-2.5 p-2.5 rounded-xl bg-rose-950/80 border border-rose-500/60 text-center">
+            <p className="text-xs text-rose-300 font-aviation font-bold">
+              ⚠️ Not enough points (10 required).
+            </p>
+            <p className="text-[11px] text-slate-300 mt-0.5">
+              {isGuest
+                ? 'Sign up to claim 1,000 free bonus points or watch an ad for +100!'
+                : 'Watch a quick ad to recharge +100 virtual points!'}
+            </p>
+          </div>
         )}
       </div>
 

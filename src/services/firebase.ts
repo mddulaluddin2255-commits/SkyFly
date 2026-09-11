@@ -96,12 +96,17 @@ function setLocalStoredProfile(profile: UserProfile): void {
   } catch {}
 }
 
-export function createDefaultProfile(uid: string, email: string, displayName: string): UserProfile {
+export function createDefaultProfile(
+  uid: string,
+  email: string,
+  displayName: string,
+  initialPoints: number = 0
+): UserProfile {
   return {
     uid,
     email: email || 'pilot@skyfly.local',
     displayName: displayName || 'Ace Pilot',
-    virtualPoints: 1000, // Every new player starts with exactly 1,000 points
+    virtualPoints: initialPoints, // Only sign-up awards 1,000 points; guest starts with 0
     highScore: 0,
     totalFlights: 0,
     successfulClaims: 0,
@@ -114,9 +119,17 @@ export function createDefaultProfile(uid: string, email: string, displayName: st
 export function getGuestProfile(): UserProfile {
   try {
     const raw = localStorage.getItem(GUEST_PROFILE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {
+      const parsed: UserProfile = JSON.parse(raw);
+      // Ensure guest profiles start with 0 points unless earned or signed up
+      if (parsed.uid === 'guest_pilot' && (parsed.totalFlights || 0) === 0 && parsed.virtualPoints === 1000) {
+        parsed.virtualPoints = 0;
+        localStorage.setItem(GUEST_PROFILE_KEY, JSON.stringify(parsed));
+      }
+      return parsed;
+    }
   } catch {}
-  const guest = createDefaultProfile('guest_pilot', 'guest@skyfly.local', 'Cadet Pilot');
+  const guest = createDefaultProfile('guest_pilot', 'guest@skyfly.local', 'Cadet Pilot', 0);
   try {
     localStorage.setItem(GUEST_PROFILE_KEY, JSON.stringify(guest));
   } catch {}
@@ -131,7 +144,7 @@ export function saveGuestProfile(profile: UserProfile): void {
 
 /**
  * Sign Up with Firebase Authentication
- * Starts new player with 1,000 virtual points and creates profile in Firestore
+ * Starts new player with 1,000 free virtual points bonus and creates profile in Firestore
  */
 export async function signUpPlayer(
   email: string,
@@ -147,10 +160,12 @@ export async function signUpPlayer(
     } catch {}
   }
 
+  // Award 1,000 virtual points exclusively upon Sign Up
   const initialProfile = createDefaultProfile(
     user.uid,
     user.email || email,
-    displayName.trim() || 'Ace Pilot'
+    displayName.trim() || 'Ace Pilot',
+    1000
   );
 
   // Write to Firestore users/{uid}
@@ -187,7 +202,8 @@ export async function signInPlayer(email: string, pass: string): Promise<UserPro
     profile = getLocalStoredProfile(user.uid) || createDefaultProfile(
       user.uid,
       user.email || email,
-      user.displayName || 'Ace Pilot'
+      user.displayName || 'Ace Pilot',
+      1000
     );
     try {
       await setDoc(doc(db, 'users', user.uid), profile);

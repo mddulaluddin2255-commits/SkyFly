@@ -8,6 +8,7 @@ interface ProfileScreenProps {
   profile: UserProfile;
   onSignOut: () => void;
   onOpenAdModal: () => void;
+  onOpenSignUp?: () => void;
   onBackToHome: () => void;
 }
 
@@ -15,6 +16,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
   profile,
   onSignOut,
   onOpenAdModal,
+  onOpenSignUp,
   onBackToHome,
 }) => {
   const handleSignOut = async () => {
@@ -104,6 +106,18 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
             <Sparkles size={14} />
             <span>WATCH AD +100 POINTS</span>
           </button>
+
+          {/* Guest Sign Up Callout */}
+          {isGuest && onOpenSignUp && (
+            <button
+              id="btn-profile-signup"
+              onClick={onOpenSignUp}
+              className="mt-2 w-full py-2 px-3 rounded-xl bg-slate-900 border border-amber-400/60 hover:border-amber-400 text-amber-300 font-bold text-xs font-aviation uppercase tracking-wider flex items-center justify-center space-x-1.5 active:scale-95 transition-all cursor-pointer"
+            >
+              <Sparkles size={14} className="text-amber-400" />
+              <span>SIGN UP FOR +1,000 FREE PTS</span>
+            </button>
+          )}
         </div>
 
         {/* Flight Career Stats Grid */}
