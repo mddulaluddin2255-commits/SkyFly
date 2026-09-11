@@ -94,7 +94,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
             <span className="text-xs font-bold text-amber-500/80 font-aviation">PTS</span>
           </div>
           <span className="text-[10px] text-slate-400 mt-1">
-            10 points required per flight • Virtual currency only
+            20 points required per flight • Virtual currency only
           </span>
 
           {/* Quick Ad recharge button */}

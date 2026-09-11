@@ -114,7 +114,7 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
             className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-sky-500 via-sky-400 to-indigo-500 hover:from-sky-400 hover:to-indigo-400 text-slate-950 font-black text-base sm:text-lg font-aviation uppercase tracking-wider shadow-lg shadow-sky-500/25 flex items-center justify-center space-x-2 active:scale-95 transition-all cursor-pointer"
           >
             <RotateCcw size={18} />
-            <span>START FLIGHT (-10 PTS)</span>
+            <span>START FLIGHT (-20 PTS)</span>
           </button>
 
           {/* Watch Ad for +100 Points */}

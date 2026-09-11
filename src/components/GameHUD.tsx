@@ -259,7 +259,7 @@ export const GameHUD: React.FC<GameHUDProps> = ({
             className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-sky-500 via-sky-400 to-indigo-500 hover:from-sky-400 hover:to-indigo-400 active:scale-95 text-slate-950 font-black text-xl sm:text-2xl font-aviation tracking-wider uppercase shadow-2xl shadow-sky-500/40 border-t-2 border-white/50 flex items-center justify-center space-x-2.5 transition-all cursor-pointer"
           >
             <Play size={22} className="fill-current" />
-            <span>START FLIGHT (-10 PTS)</span>
+            <span>START FLIGHT (-20 PTS)</span>
           </button>
         )}
 
