@@ -139,23 +139,27 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </div>
           </div>
 
-          {/* Google Ads & AdSense Config Info */}
+          {/* Adsterra Config Info */}
           <div className="space-y-2">
             <h3 className="text-[11px] font-bold text-sky-400 uppercase tracking-wider font-aviation flex items-center space-x-1.5">
               <ShieldCheck size={14} />
-              <span>Google Ads & AdSense Integration</span>
+              <span>Adsterra Ad Network Integration</span>
             </h3>
             <div className="p-3 rounded-xl bg-slate-950 border border-sky-500/30 text-slate-400 space-y-1.5 font-mono text-[10px]">
               <div>
-                <span className="text-slate-500 block">Google Client / Publisher ID:</span>
-                <span className="text-amber-300 select-all">{ADMOB_CONFIG.clientId}</span>
+                <span className="text-slate-500 block">Ad Network:</span>
+                <span className="text-amber-300">Adsterra Network</span>
               </div>
               <div>
-                <span className="text-slate-500 block">Script Status:</span>
-                <span className="text-emerald-400 font-sans font-semibold">Active in HTML Head</span>
+                <span className="text-slate-500 block">Native Rewards Container:</span>
+                <span className="text-amber-300 select-all">container-dcdee03b89e85a9a708ea876b43a2e2e</span>
+              </div>
+              <div>
+                <span className="text-slate-500 block">Rewards Delivery:</span>
+                <span className="text-emerald-400 font-sans font-semibold">+100 Virtual Points per view</span>
               </div>
               <p className="text-slate-500 font-sans text-[10px] pt-1">
-                Integrated with Google AdSense (ca-pub-5378392556030394) and server-side single-use reward verification awarding +100 virtual points per completed view.
+                Integrated with Adsterra Native Banner and Network script with verified reward claims.
               </p>
             </div>
           </div>
